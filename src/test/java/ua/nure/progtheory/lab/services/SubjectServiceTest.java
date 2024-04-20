@@ -12,13 +12,15 @@ import ua.nure.progtheory.lab.converters.SubjectConverter;
 import ua.nure.progtheory.lab.data.SubjectData;
 import ua.nure.progtheory.lab.data.TeacherData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
+import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.lab.repositories.SubjectRepository;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class SubjectServiceTest {
@@ -66,7 +68,7 @@ public class SubjectServiceTest {
     void getSubjectReturnsNullIfNotExists() {
         when(subjectRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertNull(subjectService.getSubject(1L));
+        assertThrows(ResourceNotFoundException.class, () -> subjectService.getSubject(1L));
     }
 
     @Test

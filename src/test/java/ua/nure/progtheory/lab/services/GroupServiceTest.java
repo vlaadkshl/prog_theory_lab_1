@@ -10,12 +10,14 @@ import ua.nure.progtheory.lab.business.Group;
 import ua.nure.progtheory.lab.converters.GroupConverter;
 import ua.nure.progtheory.lab.data.GroupData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
+import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.lab.repositories.GroupRepository;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class GroupServiceTest {
@@ -63,7 +65,7 @@ public class GroupServiceTest {
     void getGroupReturnsNullIfNotExists() {
         when(groupRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertNull(groupService.getGroup(1L));
+        assertThrows(ResourceNotFoundException.class, () -> groupService.getGroup(1L));
     }
 
     @Test

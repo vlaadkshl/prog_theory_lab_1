@@ -10,12 +10,14 @@ import ua.nure.progtheory.lab.business.Teacher;
 import ua.nure.progtheory.lab.converters.TeacherConverter;
 import ua.nure.progtheory.lab.data.TeacherData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
+import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.lab.repositories.TeacherRepository;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class TeacherServiceTest {
@@ -63,7 +65,7 @@ class TeacherServiceTest {
     void getTeacherReturnsNullIfNotExists() {
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertNull(teacherService.getTeacher(1L));
+        assertThrows(ResourceNotFoundException.class, () -> teacherService.getTeacher(1L));
     }
 
     @Test

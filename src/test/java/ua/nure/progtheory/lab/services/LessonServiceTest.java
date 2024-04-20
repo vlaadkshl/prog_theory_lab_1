@@ -16,12 +16,14 @@ import ua.nure.progtheory.lab.data.LessonData;
 import ua.nure.progtheory.lab.data.SubjectData;
 import ua.nure.progtheory.lab.data.TeacherData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
+import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.lab.repositories.LessonRepository;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class LessonServiceTest {
@@ -69,7 +71,7 @@ public class LessonServiceTest {
     void getLessonReturnsNullIfNotExists() {
         when(lessonRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertNull(lessonService.getLesson(1L));
+        assertThrows(ResourceNotFoundException.class, () -> lessonService.getLesson(1L));
     }
 
     @Test
@@ -128,6 +130,7 @@ public class LessonServiceTest {
     @Test
     void deleteLessonDeletesLesson() {
         doNothing().when(lessonRepository).deleteById(anyLong());
+        when(lessonRepository.existsById(anyLong())).thenReturn(true);
 
         lessonService.deleteLesson(1L);
 
