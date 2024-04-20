@@ -20,6 +20,7 @@ import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.lab.repositories.LessonRepository;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -135,5 +136,76 @@ public class LessonServiceTest {
         lessonService.deleteLesson(1L);
 
         verify(lessonRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void getLessonsByGroupReturnsLessonsIfExist() {
+        LessonData lessonData = new LessonData();
+        Lesson lesson = Lesson.builder().build();
+
+        when(lessonRepository.findByGroupId(anyLong())).thenReturn(Arrays.asList(lessonData));
+        when(lessonConverter.fromData(lessonData)).thenReturn(lesson);
+
+        assertEquals(Arrays.asList(lesson), lessonService.getLessonsByGroup(1L));
+    }
+
+    @Test
+    void getLessonsByGroupThrowsExceptionIfNoLessonsExist() {
+        when(lessonRepository.findByGroupId(anyLong())).thenReturn(Collections.emptyList());
+
+        assertThrows(ResourceNotFoundException.class, () -> lessonService.getLessonsByGroup(1L));
+    }
+
+    @Test
+    void getLessonsByTeacherReturnsLessonsIfExist() {
+        LessonData lessonData = new LessonData();
+        Lesson lesson = Lesson.builder().build();
+
+        when(lessonRepository.findByTeacherId(anyLong())).thenReturn(Arrays.asList(lessonData));
+        when(lessonConverter.fromData(lessonData)).thenReturn(lesson);
+
+        assertEquals(Arrays.asList(lesson), lessonService.getLessonsByTeacher(1L));
+    }
+
+    @Test
+    void getLessonsByTeacherThrowsExceptionIfNoLessonsExist() {
+        when(lessonRepository.findByTeacherId(anyLong())).thenReturn(Collections.emptyList());
+
+        assertThrows(ResourceNotFoundException.class, () -> lessonService.getLessonsByTeacher(1L));
+    }
+
+    @Test
+    void getLessonsBySubjectReturnsLessonsIfExist() {
+        LessonData lessonData = new LessonData();
+        Lesson lesson = Lesson.builder().build();
+
+        when(lessonRepository.findBySubjectId(anyLong())).thenReturn(Arrays.asList(lessonData));
+        when(lessonConverter.fromData(lessonData)).thenReturn(lesson);
+
+        assertEquals(Arrays.asList(lesson), lessonService.getLessonsBySubject(1L));
+    }
+
+    @Test
+    void getLessonsBySubjectThrowsExceptionIfNoLessonsExist() {
+        when(lessonRepository.findBySubjectId(anyLong())).thenReturn(Collections.emptyList());
+
+        assertThrows(ResourceNotFoundException.class, () -> lessonService.getLessonsBySubject(1L));
+    }
+
+    @Test
+    void deleteLessonDeletesLessonIfExists() {
+        doNothing().when(lessonRepository).deleteById(anyLong());
+        when(lessonRepository.existsById(anyLong())).thenReturn(true);
+
+        lessonService.deleteLesson(1L);
+
+        verify(lessonRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void deleteLessonThrowsExceptionIfNotExists() {
+        when(lessonRepository.existsById(anyLong())).thenReturn(false);
+
+        assertThrows(ResourceNotFoundException.class, () -> lessonService.deleteLesson(1L));
     }
 }
