@@ -1,17 +1,16 @@
 package ua.nure.progtheory.lab.data;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "teacher")
-public class Teacher {
+@Table(name = "group_table")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class GroupData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -19,7 +18,4 @@ public class Teacher {
 
     @Column(name = "name", length = 100)
     private String name;
-
-    @ManyToMany(mappedBy = "teachers")
-    private List<Subject> subjects = new ArrayList<>();
 }

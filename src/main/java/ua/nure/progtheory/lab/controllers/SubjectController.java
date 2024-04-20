@@ -2,7 +2,7 @@ package ua.nure.progtheory.lab.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ua.nure.progtheory.lab.data.Subject;
+import ua.nure.progtheory.lab.business.Subject;
 import ua.nure.progtheory.lab.services.SubjectService;
 
 import java.util.List;

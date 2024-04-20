@@ -3,7 +3,12 @@ package ua.nure.progtheory.lab.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import ua.nure.progtheory.lab.data.Lesson;
+import ua.nure.progtheory.lab.business.Lesson;
+import ua.nure.progtheory.lab.business.Subject;
+import ua.nure.progtheory.lab.business.Teacher;
+import ua.nure.progtheory.lab.data.LessonData;
+import ua.nure.progtheory.lab.data.SubjectData;
+import ua.nure.progtheory.lab.data.TeacherData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
 import ua.nure.progtheory.lab.repositories.LessonRepository;
 
@@ -16,38 +21,169 @@ public class LessonService {
     private final LessonRepository lessonRepository;
 
     public List<Lesson> getAllLessons() {
-        return lessonRepository.findAll();
+        var lessonsData = lessonRepository.findAll();
+
+        return lessonsData.stream()
+                .map(lesson -> {
+                    var subject = lesson.getSubject();
+                    var teacher = lesson.getTeacher();
+
+                    return Lesson.builder()
+                            .id(lesson.getId())
+                            .group(lesson.getGroup())
+                            .subject(Subject.builder()
+                                    .id(subject.getId())
+                                    .name(subject.getName())
+                                    .build())
+                            .teacher(Teacher.builder()
+                                    .id(teacher.getId())
+                                    .name(teacher.getName())
+                                    .build())
+                            .build();
+                })
+                .toList();
     }
 
     public Lesson getLesson(Long lessonId) {
-        return lessonRepository.findById(lessonId).orElse(null);
+        var lessonData = lessonRepository.findById(lessonId).orElse(null);
+
+        assert lessonData != null;
+        var subject = lessonData.getSubject();
+        var teacher = lessonData.getTeacher();
+
+        return Lesson.builder()
+                .id(lessonData.getId())
+                .group(lessonData.getGroup())
+                .subject(Subject.builder()
+                        .id(subject.getId())
+                        .name(subject.getName())
+                        .build())
+                .teacher(Teacher.builder()
+                        .id(teacher.getId())
+                        .name(teacher.getName())
+                        .build())
+                .build();
     }
 
     public List<Lesson> getLessonsByGroup(Long groupId) {
-        return lessonRepository.findByGroupId(groupId);
+        var lessonsData = lessonRepository.findByGroupId(groupId);
+
+        return lessonsData.stream()
+                .map(lesson -> {
+                    var subject = lesson.getSubject();
+                    var teacher = lesson.getTeacher();
+
+                    return Lesson.builder()
+                            .id(lesson.getId())
+                            .group(lesson.getGroup())
+                            .subject(Subject.builder()
+                                    .id(subject.getId())
+                                    .name(subject.getName())
+                                    .build())
+                            .teacher(Teacher.builder()
+                                    .id(teacher.getId())
+                                    .name(teacher.getName())
+                                    .build())
+                            .build();
+                })
+                .toList();
     }
 
     public List<Lesson> getLessonsByTeacher(Long teacherId) {
-        return lessonRepository.findByTeacherId(teacherId);
+        var lessonsData = lessonRepository.findByTeacherId(teacherId);
+
+        return lessonsData.stream()
+                .map(lesson -> {
+                    var subject = lesson.getSubject();
+                    var teacher = lesson.getTeacher();
+
+                    return Lesson.builder()
+                            .id(lesson.getId())
+                            .group(lesson.getGroup())
+                            .subject(Subject.builder()
+                                    .id(subject.getId())
+                                    .name(subject.getName())
+                                    .build())
+                            .teacher(Teacher.builder()
+                                    .id(teacher.getId())
+                                    .name(teacher.getName())
+                                    .build())
+                            .build();
+                })
+                .toList();
     }
 
     public List<Lesson> getLessonsBySubject(Long subjectId) {
-        return lessonRepository.findBySubjectId(subjectId);
+        var lessonsData = lessonRepository.findBySubjectId(subjectId);
+
+        return lessonsData.stream()
+                .map(lesson -> {
+                    var subject = lesson.getSubject();
+                    var teacher = lesson.getTeacher();
+
+                    return Lesson.builder()
+                            .id(lesson.getId())
+                            .group(lesson.getGroup())
+                            .subject(Subject.builder()
+                                    .id(subject.getId())
+                                    .name(subject.getName())
+                                    .build())
+                            .teacher(Teacher.builder()
+                                    .id(teacher.getId())
+                                    .name(teacher.getName())
+                                    .build())
+                            .build();
+                })
+                .toList();
     }
 
     public Lesson addLesson(Lesson lesson) {
+        SubjectData subjectData = SubjectData.builder()
+                .id(lesson.getSubject().getId())
+                .name(lesson.getSubject().getName())
+                .build();
+
+        TeacherData teacherData = TeacherData.builder()
+                .id(lesson.getTeacher().getId())
+                .name(lesson.getTeacher().getName())
+                .build();
+
+        LessonData lessonData = LessonData.builder()
+                .group(lesson.getGroup())
+                .subject(subjectData)
+                .teacher(teacherData)
+                .build();
+
         if (lessonRepository.existsByTeacherIdAndSubjectIdAndGroupId(
-                lesson.getTeacher().getId(), lesson.getSubject().getId(), lesson.getGroup().getId())) {
+                lessonData.getTeacher().getId(),
+                lessonData.getSubject().getId(),
+                lessonData.getGroup().getId())) {
             throw new DbRecordAlreadyExistsException(
-                    "Lesson with teacher " + lesson.getTeacher().getName()
-                            + ", subject " + lesson.getSubject().getName()
-                            + " and group " + lesson.getGroup().getName()
+                    "Lesson with teacher " + lessonData.getTeacher().getName()
+                            + ", subject " + lessonData.getSubject().getName()
+                            + " and group " + lessonData.getGroup().getName()
                             + " already exists"
             );
         }
 
         try {
-            return lessonRepository.save(lesson);
+            lessonData = lessonRepository.save(lessonData);
+
+            var subject = lessonData.getSubject();
+            var teacher = lessonData.getTeacher();
+
+            return Lesson.builder()
+                    .id(lessonData.getId())
+                    .group(lessonData.getGroup())
+                    .subject(Subject.builder()
+                            .id(subject.getId())
+                            .name(subject.getName())
+                            .build())
+                    .teacher(Teacher.builder()
+                            .id(teacher.getId())
+                            .name(teacher.getName())
+                            .build())
+                    .build();
         } catch (DataIntegrityViolationException ex) {
             throw new RuntimeException("Failed to add lesson due to data integrity violation", ex);
         }

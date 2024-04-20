@@ -1,8 +1,7 @@
 package ua.nure.progtheory.lab.data;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,10 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "subject")
-public class Subject {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SubjectData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -24,6 +26,6 @@ public class Subject {
     @JoinTable(name = "teachersubject",
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "teacher_id"))
-    private List<Teacher> teachers = new ArrayList<>();
+    private List<TeacherData> teachers = new ArrayList<>();
 
 }
