@@ -40,7 +40,7 @@ public class LessonController {
     }
 
     @PostMapping("/")
-    public Lesson addLesson(Lesson lesson) {
+    public Lesson addLesson(@RequestBody Lesson lesson) {
         return lessonService.addLesson(lesson);
     }
 

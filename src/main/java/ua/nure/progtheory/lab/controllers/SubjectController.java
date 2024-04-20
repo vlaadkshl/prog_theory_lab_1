@@ -25,7 +25,7 @@ public class SubjectController {
     }
 
     @PostMapping("/")
-    public Subject addSubject(Subject subject) {
+    public Subject addSubject(@RequestBody Subject subject) {
         return subjectService.addSubject(subject);
     }
 }

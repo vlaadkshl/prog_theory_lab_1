@@ -25,7 +25,7 @@ public class TeacherController {
     }
 
     @PostMapping("/")
-    public Teacher addTeacher(Teacher teacher) {
+    public Teacher addTeacher(@RequestBody Teacher teacher) {
         return teacherService.addTeacher(teacher);
     }
 }
