@@ -1,8 +1,10 @@
 package ua.nure.progtheory.lab.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.nure.progtheory.lab.data.Group;
+import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
 import ua.nure.progtheory.lab.repositories.GroupRepository;
 
 import java.util.List;
@@ -22,6 +24,14 @@ public class GroupService {
     }
 
     public Group addGroup(Group group) {
-        return groupRepository.save(group);
+        if (groupRepository.existsById(group.getId())) {
+            throw new DbRecordAlreadyExistsException("Group with ID " + group.getId() + " already exists");
+        }
+
+        try {
+            return groupRepository.save(group);
+        } catch (DataIntegrityViolationException ex) {
+            throw new RuntimeException("Failed to add group due to data integrity violation", ex);
+        }
     }
 }

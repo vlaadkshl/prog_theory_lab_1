@@ -1,8 +1,10 @@
 package ua.nure.progtheory.lab.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.nure.progtheory.lab.data.Teacher;
+import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
 import ua.nure.progtheory.lab.repositories.TeacherRepository;
 
 import java.util.List;
@@ -22,6 +24,14 @@ public class TeacherService {
     }
 
     public Teacher addTeacher(Teacher teacher) {
-        return teacherRepository.save(teacher);
+        if (teacherRepository.existsById(teacher.getId())) {
+            throw new DbRecordAlreadyExistsException("Teacher with ID " + teacher.getId() + " already exists");
+        }
+
+        try {
+            return teacherRepository.save(teacher);
+        } catch (DataIntegrityViolationException ex) {
+            throw new RuntimeException("Failed to add teacher due to data integrity violation", ex);
+        }
     }
 }

@@ -1,8 +1,10 @@
 package ua.nure.progtheory.lab.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.nure.progtheory.lab.data.Lesson;
+import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
 import ua.nure.progtheory.lab.repositories.LessonRepository;
 
 import java.util.List;
@@ -34,7 +36,15 @@ public class LessonService {
     }
 
     public Lesson addLesson(Lesson lesson) {
-        return lessonRepository.save(lesson);
+        if (lessonRepository.existsById(lesson.getId())) {
+            throw new DbRecordAlreadyExistsException("Lesson with ID " + lesson.getId() + " already exists");
+        }
+
+        try {
+            return lessonRepository.save(lesson);
+        } catch (DataIntegrityViolationException ex) {
+            throw new RuntimeException("Failed to add lesson due to data integrity violation", ex);
+        }
     }
 
     public void deleteLesson(Long lessonId) {
