@@ -17,6 +17,10 @@ public class LessonConverter {
 
 
     public Lesson fromData(LessonData data) {
+        if (data == null) {
+            return null;
+        }
+
         return Lesson.builder()
                 .id(data.getId())
                 .teacher(teacherConverter.fromData(data.getTeacher()))
@@ -26,6 +30,10 @@ public class LessonConverter {
     }
 
     public LessonData toData(Lesson group) {
+        if (group == null) {
+            return null;
+        }
+        
         return LessonData.builder()
                 .id(group.getId())
                 .teacher(teacherConverter.toData(group.getTeacher()))

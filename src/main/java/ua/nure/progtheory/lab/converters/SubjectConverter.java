@@ -12,6 +12,10 @@ public class SubjectConverter {
     private final TeacherConverter teacherConverter;
 
     public Subject fromData(SubjectData data) {
+        if (data == null) {
+            return null;
+        }
+
         return Subject.builder()
                 .id(data.getId())
                 .name(data.getName())
@@ -20,6 +24,10 @@ public class SubjectConverter {
     }
 
     public SubjectData toData(Subject group) {
+        if (group == null) {
+            return null;
+        }
+        
         return SubjectData.builder()
                 .id(group.getId())
                 .name(group.getName())

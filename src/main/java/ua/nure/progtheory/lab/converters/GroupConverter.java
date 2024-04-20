@@ -8,6 +8,10 @@ import ua.nure.progtheory.lab.data.GroupData;
 public class GroupConverter {
 
     public Group fromData(GroupData data) {
+        if (data == null) {
+            return null;
+        }
+
         return Group.builder()
                 .id(data.getId())
                 .name(data.getName())
@@ -15,6 +19,10 @@ public class GroupConverter {
     }
 
     public GroupData toData(Group group) {
+        if (group == null) {
+            return null;
+        }
+
         return GroupData.builder()
                 .id(group.getId())
                 .name(group.getName())

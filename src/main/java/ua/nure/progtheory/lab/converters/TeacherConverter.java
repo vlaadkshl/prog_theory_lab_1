@@ -8,6 +8,10 @@ import ua.nure.progtheory.lab.data.TeacherData;
 public class TeacherConverter {
 
     public Teacher fromData(TeacherData data) {
+        if (data == null) {
+            return null;
+        }
+
         return Teacher.builder()
                 .id(data.getId())
                 .name(data.getName())
@@ -15,6 +19,10 @@ public class TeacherConverter {
     }
 
     public TeacherData toData(Teacher group) {
+        if (group == null) {
+            return null;
+        }
+        
         return TeacherData.builder()
                 .id(group.getId())
                 .name(group.getName())
