@@ -24,8 +24,8 @@ public class TeacherService {
     }
 
     public Teacher addTeacher(Teacher teacher) {
-        if (teacherRepository.existsById(teacher.getId())) {
-            throw new DbRecordAlreadyExistsException("Teacher with ID " + teacher.getId() + " already exists");
+        if (teacherRepository.existsByName(teacher.getName())) {
+            throw new DbRecordAlreadyExistsException("Teacher " + teacher.getName() + " already exists");
         }
 
         try {

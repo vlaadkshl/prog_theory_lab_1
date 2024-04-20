@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ua.nure.progtheory.lab.data.Teacher;
 
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
+    boolean existsByName(String name);
 }

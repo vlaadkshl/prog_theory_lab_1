@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.nure.progtheory.lab.data.Subject;
+import ua.nure.progtheory.lab.data.Teacher;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
 import ua.nure.progtheory.lab.repositories.SubjectRepository;
 
@@ -24,8 +25,11 @@ public class SubjectService {
     }
 
     public Subject addSubject(Subject subject) {
-        if (subjectRepository.existsById(subject.getId())) {
-            throw new DbRecordAlreadyExistsException("Subject with ID " + subject.getId() + " already exists");
+        if (subjectRepository.existsByNameAndTeachers(subject.getName(), subject.getTeachers())) {
+            throw new DbRecordAlreadyExistsException(
+                    "Subject with name " + subject.getName() + " and teachers "
+                            + subject.getTeachers().stream().map(Teacher::getName).toList()
+                            + " already exists");
         }
 
         try {

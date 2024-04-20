@@ -24,8 +24,8 @@ public class GroupService {
     }
 
     public Group addGroup(Group group) {
-        if (groupRepository.existsById(group.getId())) {
-            throw new DbRecordAlreadyExistsException("Group with ID " + group.getId() + " already exists");
+        if (groupRepository.existsByName(group.getName())) {
+            throw new DbRecordAlreadyExistsException("Group with name " + group.getName() + " already exists");
         }
 
         try {

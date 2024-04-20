@@ -36,8 +36,14 @@ public class LessonService {
     }
 
     public Lesson addLesson(Lesson lesson) {
-        if (lessonRepository.existsById(lesson.getId())) {
-            throw new DbRecordAlreadyExistsException("Lesson with ID " + lesson.getId() + " already exists");
+        if (lessonRepository.existsByTeacherIdAndSubjectIdAndGroupId(
+                lesson.getTeacher().getId(), lesson.getSubject().getId(), lesson.getGroup().getId())) {
+            throw new DbRecordAlreadyExistsException(
+                    "Lesson with teacher " + lesson.getTeacher().getName()
+                            + ", subject " + lesson.getSubject().getName()
+                            + " and group " + lesson.getGroup().getName()
+                            + " already exists"
+            );
         }
 
         try {
