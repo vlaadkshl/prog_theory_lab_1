@@ -6,7 +6,7 @@
 
     <changeSet id="1" author="vlaadkshl">
         <createTable tableName="group_table">
-            <column name="id" type="INT">
+            <column name="id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(100)">
@@ -16,7 +16,7 @@
         <addAutoIncrement tableName="group_table" columnName="id"
                           generationType="ALWAYS"
                           incrementBy="1"
-                          columnDataType="INT"/>
+                          columnDataType="BIGINT"/>
     </changeSet>
 
     <changeSet id="2" author="vlaadkshl">

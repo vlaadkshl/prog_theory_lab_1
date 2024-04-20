@@ -6,10 +6,10 @@
 
     <changeSet id="1" author="vlaadkshl">
         <createTable tableName="TeacherSubject">
-            <column name="teacher_id" type="INT">
+            <column name="teacher_id" type="BIGINT">
                 <constraints references="Teacher(id)" foreignKeyName="fk_teacher_id" nullable="false"/>
             </column>
-            <column name="subject_id" type="INT">
+            <column name="subject_id" type="BIGINT">
                 <constraints references="Subject(id)" foreignKeyName="fk_subject_id" nullable="false"/>
             </column>
         </createTable>

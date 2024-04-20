@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "subject")
 public class Subject {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -22,7 +22,8 @@ public class Subject {
 
     @ManyToMany
     @JoinTable(name = "teachersubject",
-            joinColumns = @JoinColumn(name = "subject_id"))
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_id"))
     private List<Teacher> teachers = new ArrayList<>();
 
 }
