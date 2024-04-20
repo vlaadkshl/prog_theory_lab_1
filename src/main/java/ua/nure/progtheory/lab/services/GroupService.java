@@ -7,6 +7,7 @@ import ua.nure.progtheory.lab.business.Group;
 import ua.nure.progtheory.lab.converters.GroupConverter;
 import ua.nure.progtheory.lab.data.GroupData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
+import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.lab.repositories.GroupRepository;
 
 import java.util.List;
@@ -22,6 +23,10 @@ public class GroupService {
     public List<Group> getAllGroups() {
         List<GroupData> groupsData = groupRepository.findAll();
 
+        if (groupsData.isEmpty()) {
+            throw new ResourceNotFoundException("No groups found");
+        }
+
         return groupsData.stream()
                 .map(groupConverter::fromData)
                 .toList();
@@ -31,7 +36,7 @@ public class GroupService {
         GroupData groupData = groupRepository.findById(id).orElse(null);
 
         if (groupData == null) {
-            return null;
+            throw new ResourceNotFoundException("Group not found");
         }
 
         return groupConverter.fromData(groupData);

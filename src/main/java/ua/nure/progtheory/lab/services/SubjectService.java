@@ -7,6 +7,7 @@ import ua.nure.progtheory.lab.business.Subject;
 import ua.nure.progtheory.lab.converters.SubjectConverter;
 import ua.nure.progtheory.lab.data.TeacherData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
+import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.lab.repositories.SubjectRepository;
 
 import java.util.List;
@@ -22,6 +23,10 @@ public class SubjectService {
     public List<Subject> getAllSubjects() {
         var subjectData = subjectRepository.findAll();
 
+        if (subjectData.isEmpty()) {
+            throw new ResourceNotFoundException("No subjects found");
+        }
+
         return subjectData.stream()
                 .map(subjectConverter::fromData)
                 .toList();
@@ -31,7 +36,7 @@ public class SubjectService {
         var subjectData = subjectRepository.findById(id).orElse(null);
 
         if (subjectData == null) {
-            return null;
+            throw new ResourceNotFoundException("Subject is not found");
         }
 
         return subjectConverter.fromData(subjectData);

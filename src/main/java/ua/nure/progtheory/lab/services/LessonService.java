@@ -7,6 +7,7 @@ import ua.nure.progtheory.lab.business.Lesson;
 import ua.nure.progtheory.lab.converters.LessonConverter;
 import ua.nure.progtheory.lab.data.LessonData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
+import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.lab.repositories.LessonRepository;
 
 import java.util.List;
@@ -22,6 +23,10 @@ public class LessonService {
     public List<Lesson> getAllLessons() {
         var lessonsData = lessonRepository.findAll();
 
+        if (lessonsData.isEmpty()) {
+            throw new ResourceNotFoundException("No lessons found");
+        }
+
         return lessonsData.stream()
                 .map(lessonConverter::fromData)
                 .toList();
@@ -31,7 +36,7 @@ public class LessonService {
         var lessonData = lessonRepository.findById(lessonId).orElse(null);
 
         if (lessonData == null) {
-            return null;
+            throw new ResourceNotFoundException("Lesson is not found");
         }
 
         return lessonConverter.fromData(lessonData);
@@ -39,6 +44,10 @@ public class LessonService {
 
     public List<Lesson> getLessonsByGroup(Long groupId) {
         var lessonsData = lessonRepository.findByGroupId(groupId);
+
+        if (lessonsData.isEmpty()) {
+            throw new ResourceNotFoundException("No lessons found for group with id " + groupId);
+        }
 
         return lessonsData.stream()
                 .map(lessonConverter::fromData)
@@ -48,6 +57,10 @@ public class LessonService {
     public List<Lesson> getLessonsByTeacher(Long teacherId) {
         var lessonsData = lessonRepository.findByTeacherId(teacherId);
 
+        if (lessonsData.isEmpty()) {
+            throw new ResourceNotFoundException("No lessons found for teacher with id " + teacherId);
+        }
+
         return lessonsData.stream()
                 .map(lessonConverter::fromData)
                 .toList();
@@ -55,6 +68,10 @@ public class LessonService {
 
     public List<Lesson> getLessonsBySubject(Long subjectId) {
         var lessonsData = lessonRepository.findBySubjectId(subjectId);
+
+        if (lessonsData.isEmpty()) {
+            throw new ResourceNotFoundException("No lessons found for subject with id " + subjectId);
+        }
 
         return lessonsData.stream()
                 .map(lessonConverter::fromData)
@@ -85,6 +102,10 @@ public class LessonService {
     }
 
     public void deleteLesson(Long lessonId) {
+        if (!lessonRepository.existsById(lessonId)) {
+            throw new ResourceNotFoundException("Lesson is not found");
+        }
+
         lessonRepository.deleteById(lessonId);
     }
 }

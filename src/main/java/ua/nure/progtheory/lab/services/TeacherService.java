@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ua.nure.progtheory.lab.business.Teacher;
 import ua.nure.progtheory.lab.converters.TeacherConverter;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
+import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.lab.repositories.TeacherRepository;
 
 import java.util.List;
@@ -21,6 +22,10 @@ public class TeacherService {
     public List<Teacher> getAllTeachers() {
         var teachersData = teacherRepository.findAll();
 
+        if (teachersData.isEmpty()) {
+            throw new ResourceNotFoundException("No teachers found");
+        }
+
         return teachersData.stream()
                 .map(teacherConverter::fromData)
                 .toList();
@@ -30,7 +35,7 @@ public class TeacherService {
         var teacherData = teacherRepository.findById(id).orElse(null);
 
         if (teacherData == null) {
-            return null;
+            throw new ResourceNotFoundException("Teacher is not found");
         }
 
         return teacherConverter.fromData(teacherData);
