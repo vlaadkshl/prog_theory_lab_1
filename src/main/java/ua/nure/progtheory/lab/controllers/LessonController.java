@@ -3,7 +3,7 @@ package ua.nure.progtheory.lab.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ua.nure.progtheory.lab.data.Lesson;
-import ua.nure.progtheory.lab.repositories.LessonRepository;
+import ua.nure.progtheory.lab.services.LessonService;
 
 import java.util.List;
 
@@ -12,40 +12,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LessonController {
 
-    private final LessonRepository lessonRepository;
+    private final LessonService lessonService;
 
     @GetMapping("/")
     public List<Lesson> getAllLessons() {
-        return lessonRepository.findAll();
+        return lessonService.getAllLessons();
     }
 
     @GetMapping("/{lessonId}")
     public Lesson getLesson(@PathVariable Long lessonId) {
-        return lessonRepository.findById(lessonId).orElse(null);
+        return lessonService.getLesson(lessonId);
     }
 
     @GetMapping("/byGroup/{groupId}")
     public List<Lesson> getLessonsByGroup(@PathVariable Long groupId) {
-        return lessonRepository.findByGroupId(groupId);
+        return lessonService.getLessonsByGroup(groupId);
     }
 
     @GetMapping("/byTeacher/{teacherId}")
     public List<Lesson> getLessonsByTeacher(@PathVariable Long teacherId) {
-        return lessonRepository.findByTeacherId(teacherId);
+        return lessonService.getLessonsByTeacher(teacherId);
     }
 
     @GetMapping("/bySubject/{subjectId}")
     public List<Lesson> getLessonsBySubject(@PathVariable Long subjectId) {
-        return lessonRepository.findBySubjectId(subjectId);
+        return lessonService.getLessonsBySubject(subjectId);
     }
 
     @PostMapping("/")
     public Lesson addLesson(Lesson lesson) {
-        return lessonRepository.save(lesson);
+        return lessonService.addLesson(lesson);
     }
 
     @DeleteMapping("/{lessonId}")
     public void deleteLesson(@PathVariable Long lessonId) {
-        lessonRepository.deleteById(lessonId);
+        lessonService.deleteLesson(lessonId);
     }
 }

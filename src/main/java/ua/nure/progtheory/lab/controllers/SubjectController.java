@@ -3,7 +3,7 @@ package ua.nure.progtheory.lab.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ua.nure.progtheory.lab.data.Subject;
-import ua.nure.progtheory.lab.repositories.SubjectRepository;
+import ua.nure.progtheory.lab.services.SubjectService;
 
 import java.util.List;
 
@@ -12,20 +12,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SubjectController {
 
-    private final SubjectRepository subjectRepository;
+    private final SubjectService subjectService;
 
     @GetMapping("/all")
     public List<Subject> getAllSubjects() {
-        return subjectRepository.findAll();
+        return subjectService.getAllSubjects();
     }
 
     @GetMapping("/{id}")
     public Subject getSubject(@PathVariable Long id) {
-        return subjectRepository.findById(id).orElse(null);
+        return subjectService.getSubject(id);
     }
 
     @PostMapping("/")
     public Subject addSubject(Subject subject) {
-        return subjectRepository.save(subject);
+        return subjectService.addSubject(subject);
     }
 }

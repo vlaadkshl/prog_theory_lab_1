@@ -3,7 +3,7 @@ package ua.nure.progtheory.lab.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ua.nure.progtheory.lab.data.Group;
-import ua.nure.progtheory.lab.repositories.GroupRepository;
+import ua.nure.progtheory.lab.services.GroupService;
 
 import java.util.List;
 
@@ -12,20 +12,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GroupController {
 
-    private final GroupRepository groupRepository;
+    private final GroupService groupService;
 
     @GetMapping("/all")
     public List<Group> getAllGroups() {
-        return groupRepository.findAll();
+        return groupService.getAllGroups();
     }
 
     @GetMapping("/{id}")
     public Group getGroup(@PathVariable Long id) {
-        return groupRepository.findById(id).orElse(null);
+        return groupService.getGroup(id);
     }
 
     @PostMapping("/")
     public Group addGroup(Group group) {
-        return groupRepository.save(group);
+        return groupService.addGroup(group);
     }
 }
