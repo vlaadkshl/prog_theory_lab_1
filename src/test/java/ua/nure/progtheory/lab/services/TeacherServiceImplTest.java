@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-class TeacherServiceTest {
+class TeacherServiceImplTest {
 
     @Mock
     TeacherRepository teacherRepository;
@@ -29,7 +29,7 @@ class TeacherServiceTest {
     TeacherConverter teacherConverter;
 
     @InjectMocks
-    TeacherService teacherService;
+    TeacherServiceImpl teacherServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -47,7 +47,7 @@ class TeacherServiceTest {
         when(teacherConverter.fromData(teacherData1)).thenReturn(teacher1);
         when(teacherConverter.fromData(teacherData2)).thenReturn(teacher2);
 
-        assertEquals(Arrays.asList(teacher1, teacher2), teacherService.getAllTeachers());
+        assertEquals(Arrays.asList(teacher1, teacher2), teacherServiceImpl.getAll());
     }
 
     @Test
@@ -58,14 +58,14 @@ class TeacherServiceTest {
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(teacherData));
         when(teacherConverter.fromData(teacherData)).thenReturn(teacher);
 
-        assertEquals(teacher, teacherService.getTeacher(1L));
+        assertEquals(teacher, teacherServiceImpl.get(1L));
     }
 
     @Test
     void getTeacherReturnsNullIfNotExists() {
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> teacherService.getTeacher(1L));
+        assertThrows(ResourceNotFoundException.class, () -> teacherServiceImpl.get(1L));
     }
 
     @Test
@@ -77,7 +77,7 @@ class TeacherServiceTest {
         when(teacherConverter.fromData(any(TeacherData.class))).thenReturn(teacher);
         when(teacherRepository.existsByName(anyString())).thenReturn(true);
 
-        assertThrows(DbRecordAlreadyExistsException.class, () -> teacherService.addTeacher(teacher));
+        assertThrows(DbRecordAlreadyExistsException.class, () -> teacherServiceImpl.save(teacher));
     }
 
     @Test
@@ -90,7 +90,7 @@ class TeacherServiceTest {
         when(teacherRepository.save(any(TeacherData.class))).thenReturn(teacherData);
         when(teacherConverter.fromData(any(TeacherData.class))).thenReturn(teacher);
 
-        assertEquals(teacher, teacherService.addTeacher(teacher));
+        assertEquals(teacher, teacherServiceImpl.save(teacher));
     }
 
     @Test
@@ -102,6 +102,6 @@ class TeacherServiceTest {
         when(teacherConverter.toData(any(Teacher.class))).thenReturn(teacherData);
         when(teacherRepository.save(any(TeacherData.class))).thenThrow(DataIntegrityViolationException.class);
 
-        assertThrows(RuntimeException.class, () -> teacherService.addTeacher(teacher));
+        assertThrows(RuntimeException.class, () -> teacherServiceImpl.save(teacher));
     }
 }

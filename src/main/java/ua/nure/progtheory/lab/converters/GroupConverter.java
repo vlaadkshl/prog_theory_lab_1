@@ -5,8 +5,9 @@ import ua.nure.progtheory.lab.business.Group;
 import ua.nure.progtheory.lab.data.GroupData;
 
 @Component
-public class GroupConverter {
+public class GroupConverter implements Converter<Group, GroupData> {
 
+    @Override
     public Group fromData(GroupData data) {
         if (data == null) {
             return null;
@@ -18,6 +19,7 @@ public class GroupConverter {
                 .build();
     }
 
+    @Override
     public GroupData toData(Group group) {
         if (group == null) {
             return null;
