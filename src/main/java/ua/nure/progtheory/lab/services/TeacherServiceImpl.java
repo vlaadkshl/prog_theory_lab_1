@@ -13,13 +13,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TeacherServiceImpl {
+public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
 
     private final TeacherConverter teacherConverter;
 
-    public List<Teacher> getAllTeachers() {
+    @Override
+    public List<Teacher> getAll() {
         var teachersData = teacherRepository.findAll();
 
         if (teachersData.isEmpty()) {
@@ -31,7 +32,8 @@ public class TeacherServiceImpl {
                 .toList();
     }
 
-    public Teacher getTeacher(Long id) {
+    @Override
+    public Teacher get(Long id) {
         var teacherData = teacherRepository.findById(id).orElse(null);
 
         if (teacherData == null) {
@@ -41,7 +43,8 @@ public class TeacherServiceImpl {
         return teacherConverter.fromData(teacherData);
     }
 
-    public Teacher addTeacher(Teacher teacher) {
+    @Override
+    public Teacher save(Teacher teacher) {
         var teacherData = teacherConverter.toData(teacher);
 
         if (teacherRepository.existsByName(teacherData.getName())) {
