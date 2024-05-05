@@ -14,13 +14,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SubjectServiceImpl {
+public class SubjectServiceImpl implements SubjectService {
 
     private final SubjectRepository subjectRepository;
 
     private final SubjectConverter subjectConverter;
 
-    public List<Subject> getAllSubjects() {
+    @Override
+    public List<Subject> getAll() {
         var subjectData = subjectRepository.findAll();
 
         if (subjectData.isEmpty()) {
@@ -32,7 +33,8 @@ public class SubjectServiceImpl {
                 .toList();
     }
 
-    public Subject getSubject(Long id) {
+    @Override
+    public Subject get(Long id) {
         var subjectData = subjectRepository.findById(id).orElse(null);
 
         if (subjectData == null) {
@@ -42,7 +44,8 @@ public class SubjectServiceImpl {
         return subjectConverter.fromData(subjectData);
     }
 
-    public Subject addSubject(Subject subject) {
+    @Override
+    public Subject save(Subject subject) {
         var subjectData = subjectConverter.toData(subject);
 
         if (subjectRepository.existsByNameAndTeachers(subjectData.getName(), subjectData.getTeachers())) {
