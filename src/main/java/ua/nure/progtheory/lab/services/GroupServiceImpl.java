@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class GroupService {
+public class GroupServiceImpl {
 
     private final GroupConverter groupConverter;
 

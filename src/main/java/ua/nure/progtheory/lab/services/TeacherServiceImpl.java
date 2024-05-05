@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TeacherService {
+public class TeacherServiceImpl {
 
     private final TeacherRepository teacherRepository;
 

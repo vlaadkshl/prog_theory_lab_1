@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class LessonService {
+public class LessonServiceImpl {
 
     private final LessonRepository lessonRepository;
 

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class SubjectServiceTest {
+public class SubjectServiceImplTest {
 
     @Mock
     SubjectRepository subjectRepository;
@@ -32,7 +32,7 @@ public class SubjectServiceTest {
     SubjectConverter subjectConverter;
 
     @InjectMocks
-    SubjectService subjectService;
+    SubjectServiceImpl subjectServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -50,7 +50,7 @@ public class SubjectServiceTest {
         when(subjectConverter.fromData(subjectData1)).thenReturn(subject1);
         when(subjectConverter.fromData(subjectData2)).thenReturn(subject2);
 
-        assertEquals(Arrays.asList(subject1, subject2), subjectService.getAllSubjects());
+        assertEquals(Arrays.asList(subject1, subject2), subjectServiceImpl.getAllSubjects());
     }
 
     @Test
@@ -61,14 +61,14 @@ public class SubjectServiceTest {
         when(subjectRepository.findById(anyLong())).thenReturn(Optional.of(subjectData));
         when(subjectConverter.fromData(subjectData)).thenReturn(subject);
 
-        assertEquals(subject, subjectService.getSubject(1L));
+        assertEquals(subject, subjectServiceImpl.getSubject(1L));
     }
 
     @Test
     void getSubjectReturnsNullIfNotExists() {
         when(subjectRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> subjectService.getSubject(1L));
+        assertThrows(ResourceNotFoundException.class, () -> subjectServiceImpl.getSubject(1L));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class SubjectServiceTest {
         when(subjectConverter.fromData(any(SubjectData.class))).thenReturn(subject);
         when(subjectRepository.existsByNameAndTeachers(anyString(), anyList())).thenReturn(true);
 
-        assertThrows(DbRecordAlreadyExistsException.class, () -> subjectService.addSubject(subject));
+        assertThrows(DbRecordAlreadyExistsException.class, () -> subjectServiceImpl.addSubject(subject));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class SubjectServiceTest {
         when(subjectRepository.save(any(SubjectData.class))).thenReturn(subjectData);
         when(subjectConverter.fromData(any(SubjectData.class))).thenReturn(subject);
 
-        assertEquals(subject, subjectService.addSubject(subject));
+        assertEquals(subject, subjectServiceImpl.addSubject(subject));
     }
 
     @Test
@@ -113,6 +113,6 @@ public class SubjectServiceTest {
         when(subjectConverter.toData(any(Subject.class))).thenReturn(subjectData);
         when(subjectRepository.save(any(SubjectData.class))).thenThrow(DataIntegrityViolationException.class);
 
-        assertThrows(RuntimeException.class, () -> subjectService.addSubject(subject));
+        assertThrows(RuntimeException.class, () -> subjectServiceImpl.addSubject(subject));
     }
 }

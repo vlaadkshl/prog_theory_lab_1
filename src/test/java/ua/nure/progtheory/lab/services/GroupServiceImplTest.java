@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class GroupServiceTest {
+public class GroupServiceImplTest {
 
     @Mock
     private GroupRepository groupRepository;
@@ -29,7 +29,7 @@ public class GroupServiceTest {
     private GroupConverter groupConverter;
 
     @InjectMocks
-    private GroupService groupService;
+    private GroupServiceImpl groupServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -47,7 +47,7 @@ public class GroupServiceTest {
         when(groupConverter.fromData(groupData1)).thenReturn(group1);
         when(groupConverter.fromData(groupData2)).thenReturn(group2);
 
-        assertEquals(Arrays.asList(group1, group2), groupService.getAllGroups());
+        assertEquals(Arrays.asList(group1, group2), groupServiceImpl.getAllGroups());
     }
 
     @Test
@@ -58,14 +58,14 @@ public class GroupServiceTest {
         when(groupRepository.findById(anyLong())).thenReturn(Optional.of(groupData));
         when(groupConverter.fromData(groupData)).thenReturn(group);
 
-        assertEquals(group, groupService.getGroup(1L));
+        assertEquals(group, groupServiceImpl.getGroup(1L));
     }
 
     @Test
     void getGroupReturnsNullIfNotExists() {
         when(groupRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> groupService.getGroup(1L));
+        assertThrows(ResourceNotFoundException.class, () -> groupServiceImpl.getGroup(1L));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class GroupServiceTest {
 
         when(groupRepository.existsByName(anyString())).thenReturn(true);
 
-        assertThrows(DbRecordAlreadyExistsException.class, () -> groupService.addGroup(group));
+        assertThrows(DbRecordAlreadyExistsException.class, () -> groupServiceImpl.addGroup(group));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class GroupServiceTest {
         when(groupRepository.save(any(GroupData.class))).thenReturn(groupData);
         when(groupConverter.fromData(any(GroupData.class))).thenReturn(group);
 
-        assertEquals(group, groupService.addGroup(group));
+        assertEquals(group, groupServiceImpl.addGroup(group));
     }
 
     @Test
@@ -100,6 +100,6 @@ public class GroupServiceTest {
         when(groupConverter.toData(any(Group.class))).thenReturn(groupData);
         when(groupRepository.save(any(GroupData.class))).thenThrow(DataIntegrityViolationException.class);
 
-        assertThrows(RuntimeException.class, () -> groupService.addGroup(group));
+        assertThrows(RuntimeException.class, () -> groupServiceImpl.addGroup(group));
     }
 }

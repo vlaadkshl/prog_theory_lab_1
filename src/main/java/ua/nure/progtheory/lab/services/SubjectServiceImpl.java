@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SubjectService {
+public class SubjectServiceImpl {
 
     private final SubjectRepository subjectRepository;
 

@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class LessonServiceTest {
+public class LessonServiceImplTest {
 
     @Mock
     LessonRepository lessonRepository;
@@ -36,7 +36,7 @@ public class LessonServiceTest {
     LessonConverter lessonConverter;
 
     @InjectMocks
-    LessonService lessonService;
+    LessonServiceImpl lessonServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -54,7 +54,7 @@ public class LessonServiceTest {
         when(lessonConverter.fromData(lessonData1)).thenReturn(lesson1);
         when(lessonConverter.fromData(lessonData2)).thenReturn(lesson2);
 
-        assertEquals(Arrays.asList(lesson1, lesson2), lessonService.getAllLessons());
+        assertEquals(Arrays.asList(lesson1, lesson2), lessonServiceImpl.getAllLessons());
     }
 
     @Test
@@ -65,14 +65,14 @@ public class LessonServiceTest {
         when(lessonRepository.findById(anyLong())).thenReturn(Optional.of(lessonData));
         when(lessonConverter.fromData(lessonData)).thenReturn(lesson);
 
-        assertEquals(lesson, lessonService.getLesson(1L));
+        assertEquals(lesson, lessonServiceImpl.getLesson(1L));
     }
 
     @Test
     void getLessonReturnsNullIfNotExists() {
         when(lessonRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> lessonService.getLesson(1L));
+        assertThrows(ResourceNotFoundException.class, () -> lessonServiceImpl.getLesson(1L));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class LessonServiceTest {
         when(lessonConverter.fromData(any(LessonData.class))).thenReturn(lesson);
         when(lessonRepository.existsByTeacherIdAndSubjectIdAndGroupId(anyLong(), anyLong(), anyLong())).thenReturn(true);
 
-        assertThrows(DbRecordAlreadyExistsException.class, () -> lessonService.addLesson(lesson));
+        assertThrows(DbRecordAlreadyExistsException.class, () -> lessonServiceImpl.addLesson(lesson));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class LessonServiceTest {
         when(lessonRepository.save(any(LessonData.class))).thenReturn(lessonData);
         when(lessonConverter.fromData(any(LessonData.class))).thenReturn(lesson);
 
-        assertEquals(lesson, lessonService.addLesson(lesson));
+        assertEquals(lesson, lessonServiceImpl.addLesson(lesson));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class LessonServiceTest {
         when(lessonConverter.toData(any(Lesson.class))).thenReturn(lessonData);
         when(lessonRepository.save(any(LessonData.class))).thenThrow(DataIntegrityViolationException.class);
 
-        assertThrows(RuntimeException.class, () -> lessonService.addLesson(lesson));
+        assertThrows(RuntimeException.class, () -> lessonServiceImpl.addLesson(lesson));
     }
 
     @Test
@@ -133,7 +133,7 @@ public class LessonServiceTest {
         doNothing().when(lessonRepository).deleteById(anyLong());
         when(lessonRepository.existsById(anyLong())).thenReturn(true);
 
-        lessonService.deleteLesson(1L);
+        lessonServiceImpl.deleteLesson(1L);
 
         verify(lessonRepository, times(1)).deleteById(anyLong());
     }
@@ -146,14 +146,14 @@ public class LessonServiceTest {
         when(lessonRepository.findByGroupId(anyLong())).thenReturn(Arrays.asList(lessonData));
         when(lessonConverter.fromData(lessonData)).thenReturn(lesson);
 
-        assertEquals(Arrays.asList(lesson), lessonService.getLessonsByGroup(1L));
+        assertEquals(Arrays.asList(lesson), lessonServiceImpl.getLessonsByGroup(1L));
     }
 
     @Test
     void getLessonsByGroupThrowsExceptionIfNoLessonsExist() {
         when(lessonRepository.findByGroupId(anyLong())).thenReturn(Collections.emptyList());
 
-        assertThrows(ResourceNotFoundException.class, () -> lessonService.getLessonsByGroup(1L));
+        assertThrows(ResourceNotFoundException.class, () -> lessonServiceImpl.getLessonsByGroup(1L));
     }
 
     @Test
@@ -164,14 +164,14 @@ public class LessonServiceTest {
         when(lessonRepository.findByTeacherId(anyLong())).thenReturn(Arrays.asList(lessonData));
         when(lessonConverter.fromData(lessonData)).thenReturn(lesson);
 
-        assertEquals(Arrays.asList(lesson), lessonService.getLessonsByTeacher(1L));
+        assertEquals(Arrays.asList(lesson), lessonServiceImpl.getLessonsByTeacher(1L));
     }
 
     @Test
     void getLessonsByTeacherThrowsExceptionIfNoLessonsExist() {
         when(lessonRepository.findByTeacherId(anyLong())).thenReturn(Collections.emptyList());
 
-        assertThrows(ResourceNotFoundException.class, () -> lessonService.getLessonsByTeacher(1L));
+        assertThrows(ResourceNotFoundException.class, () -> lessonServiceImpl.getLessonsByTeacher(1L));
     }
 
     @Test
@@ -182,14 +182,14 @@ public class LessonServiceTest {
         when(lessonRepository.findBySubjectId(anyLong())).thenReturn(Arrays.asList(lessonData));
         when(lessonConverter.fromData(lessonData)).thenReturn(lesson);
 
-        assertEquals(Arrays.asList(lesson), lessonService.getLessonsBySubject(1L));
+        assertEquals(Arrays.asList(lesson), lessonServiceImpl.getLessonsBySubject(1L));
     }
 
     @Test
     void getLessonsBySubjectThrowsExceptionIfNoLessonsExist() {
         when(lessonRepository.findBySubjectId(anyLong())).thenReturn(Collections.emptyList());
 
-        assertThrows(ResourceNotFoundException.class, () -> lessonService.getLessonsBySubject(1L));
+        assertThrows(ResourceNotFoundException.class, () -> lessonServiceImpl.getLessonsBySubject(1L));
     }
 
     @Test
@@ -197,7 +197,7 @@ public class LessonServiceTest {
         doNothing().when(lessonRepository).deleteById(anyLong());
         when(lessonRepository.existsById(anyLong())).thenReturn(true);
 
-        lessonService.deleteLesson(1L);
+        lessonServiceImpl.deleteLesson(1L);
 
         verify(lessonRepository, times(1)).deleteById(anyLong());
     }
@@ -206,6 +206,6 @@ public class LessonServiceTest {
     void deleteLessonThrowsExceptionIfNotExists() {
         when(lessonRepository.existsById(anyLong())).thenReturn(false);
 
-        assertThrows(ResourceNotFoundException.class, () -> lessonService.deleteLesson(1L));
+        assertThrows(ResourceNotFoundException.class, () -> lessonServiceImpl.deleteLesson(1L));
     }
 }

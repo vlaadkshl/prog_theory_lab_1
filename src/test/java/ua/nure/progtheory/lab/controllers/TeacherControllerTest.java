@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ua.nure.progtheory.lab.business.Teacher;
 import ua.nure.progtheory.lab.exceptions.GlobalExceptionHandler;
 import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
-import ua.nure.progtheory.lab.services.TeacherService;
+import ua.nure.progtheory.lab.services.TeacherServiceImpl;
 
 import java.util.Collections;
 
@@ -28,7 +28,7 @@ class TeacherControllerTest {
     private TeacherController teacherController;
 
     @Mock
-    private TeacherService teacherService;
+    private TeacherServiceImpl teacherServiceImpl;
 
     MockMvc mockMvc;
 
@@ -41,41 +41,41 @@ class TeacherControllerTest {
 
     @Test
     void getAllTeachersReturnsEmptyListWhenNoTeachersExist() throws Exception {
-        when(teacherService.getAllTeachers()).thenReturn(Collections.emptyList());
+        when(teacherServiceImpl.getAllTeachers()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/api/teacher/all"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
 
-        verify(teacherService, times(1)).getAllTeachers();
+        verify(teacherServiceImpl, times(1)).getAllTeachers();
     }
 
     @Test
     void getTeacherReturnsTeacherWhenExists() throws Exception {
         Teacher teacher = Teacher.builder().id(1L).build();
-        when(teacherService.getTeacher(1L)).thenReturn(teacher);
+        when(teacherServiceImpl.getTeacher(1L)).thenReturn(teacher);
 
         mockMvc.perform(get("/api/teacher/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":1}"));
 
-        verify(teacherService, times(1)).getTeacher(1L);
+        verify(teacherServiceImpl, times(1)).getTeacher(1L);
     }
 
     @Test
     void getTeacherReturnsNotFoundWhenNotExists() throws Exception {
-        when(teacherService.getTeacher(1L)).thenThrow(new ResourceNotFoundException("Teacher not found"));
+        when(teacherServiceImpl.getTeacher(1L)).thenThrow(new ResourceNotFoundException("Teacher not found"));
 
         mockMvc.perform(get("/api/teacher/1"))
                 .andExpect(status().isNotFound());
 
-        verify(teacherService, times(1)).getTeacher(1L);
+        verify(teacherServiceImpl, times(1)).getTeacher(1L);
     }
 
     @Test
     void addTeacherReturnsCreatedTeacher() throws Exception {
         Teacher teacher = Teacher.builder().id(1L).build();
-        when(teacherService.addTeacher(any(Teacher.class))).thenReturn(teacher);
+        when(teacherServiceImpl.addTeacher(any(Teacher.class))).thenReturn(teacher);
 
         mockMvc.perform(post("/api/teacher/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,6 +83,6 @@ class TeacherControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":1}"));
 
-        verify(teacherService, times(1)).addTeacher(any(Teacher.class));
+        verify(teacherServiceImpl, times(1)).addTeacher(any(Teacher.class));
     }
 }

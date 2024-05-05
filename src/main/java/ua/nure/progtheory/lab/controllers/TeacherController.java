@@ -3,7 +3,7 @@ package ua.nure.progtheory.lab.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ua.nure.progtheory.lab.business.Teacher;
-import ua.nure.progtheory.lab.services.TeacherService;
+import ua.nure.progtheory.lab.services.TeacherServiceImpl;
 
 import java.util.List;
 
@@ -12,20 +12,20 @@ import java.util.List;
 @RequestMapping("/api/teacher")
 public class TeacherController {
 
-    private final TeacherService teacherService;
+    private final TeacherServiceImpl teacherServiceImpl;
 
     @GetMapping("/all")
     public List<Teacher> getAllTeachers() {
-        return teacherService.getAllTeachers();
+        return teacherServiceImpl.getAllTeachers();
     }
 
     @GetMapping("/{id}")
     public Teacher getTeacher(@PathVariable Long id) {
-        return teacherService.getTeacher(id);
+        return teacherServiceImpl.getTeacher(id);
     }
 
     @PostMapping("/")
     public Teacher addTeacher(@RequestBody Teacher teacher) {
-        return teacherService.addTeacher(teacher);
+        return teacherServiceImpl.addTeacher(teacher);
     }
 }
