@@ -5,9 +5,11 @@ import org.springframework.stereotype.Component;
 import ua.nure.progtheory.lab.business.Group;
 import ua.nure.progtheory.lab.business.Lesson;
 import ua.nure.progtheory.lab.business.Subject;
+import ua.nure.progtheory.lab.business.Teacher;
 import ua.nure.progtheory.lab.data.GroupData;
 import ua.nure.progtheory.lab.data.LessonData;
 import ua.nure.progtheory.lab.data.SubjectData;
+import ua.nure.progtheory.lab.data.TeacherData;
 
 @Component
 @RequiredArgsConstructor
@@ -15,7 +17,7 @@ public class LessonConverter implements Converter<Lesson, LessonData> {
 
     private final Converter<Group, GroupData> groupConverter;
 
-    private final TeacherConverter teacherConverter;
+    private final Converter<Teacher, TeacherData> teacherConverter;
 
     private final Converter<Subject, SubjectData> subjectConverter;
 

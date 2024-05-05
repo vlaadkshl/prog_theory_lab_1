@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.nure.progtheory.lab.business.Teacher;
-import ua.nure.progtheory.lab.converters.TeacherConverter;
+import ua.nure.progtheory.lab.converters.Converter;
+import ua.nure.progtheory.lab.data.TeacherData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
 import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.lab.repositories.TeacherRepository;
@@ -17,7 +18,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
 
-    private final TeacherConverter teacherConverter;
+    private final Converter<Teacher, TeacherData> teacherConverter;
 
     @Override
     public List<Teacher> getAll() {

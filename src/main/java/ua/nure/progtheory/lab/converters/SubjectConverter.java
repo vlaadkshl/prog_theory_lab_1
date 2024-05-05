@@ -3,13 +3,15 @@ package ua.nure.progtheory.lab.converters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ua.nure.progtheory.lab.business.Subject;
+import ua.nure.progtheory.lab.business.Teacher;
 import ua.nure.progtheory.lab.data.SubjectData;
+import ua.nure.progtheory.lab.data.TeacherData;
 
 @Component
 @RequiredArgsConstructor
 public class SubjectConverter implements Converter<Subject, SubjectData> {
 
-    private final TeacherConverter teacherConverter;
+    private final Converter<Teacher, TeacherData> teacherConverter;
 
     @Override
     public Subject fromData(SubjectData data) {

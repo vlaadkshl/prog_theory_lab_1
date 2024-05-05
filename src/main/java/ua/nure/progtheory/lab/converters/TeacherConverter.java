@@ -5,8 +5,9 @@ import ua.nure.progtheory.lab.business.Teacher;
 import ua.nure.progtheory.lab.data.TeacherData;
 
 @Component
-public class TeacherConverter {
+public class TeacherConverter implements Converter<Teacher, TeacherData> {
 
+    @Override
     public Teacher fromData(TeacherData data) {
         if (data == null) {
             return null;
@@ -18,11 +19,12 @@ public class TeacherConverter {
                 .build();
     }
 
+    @Override
     public TeacherData toData(Teacher group) {
         if (group == null) {
             return null;
         }
-        
+
         return TeacherData.builder()
                 .id(group.getId())
                 .name(group.getName())
