@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.nure.progtheory.lab.business.Lesson;
-import ua.nure.progtheory.lab.converters.LessonConverter;
+import ua.nure.progtheory.lab.converters.Converter;
 import ua.nure.progtheory.lab.data.LessonData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
 import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
@@ -18,7 +18,7 @@ public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
 
-    private final LessonConverter lessonConverter;
+    private final Converter<Lesson, LessonData> lessonConverter;
 
     @Override
     public List<Lesson> getAll() {

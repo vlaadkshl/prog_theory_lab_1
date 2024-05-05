@@ -9,7 +9,7 @@ import ua.nure.progtheory.lab.data.LessonData;
 
 @Component
 @RequiredArgsConstructor
-public class LessonConverter {
+public class LessonConverter implements Converter<Lesson, LessonData> {
 
     private final Converter<Group, GroupData> groupConverter;
 
@@ -17,7 +17,7 @@ public class LessonConverter {
 
     private final SubjectConverter subjectConverter;
 
-
+    @Override
     public Lesson fromData(LessonData data) {
         if (data == null) {
             return null;
@@ -31,6 +31,7 @@ public class LessonConverter {
                 .build();
     }
 
+    @Override
     public LessonData toData(Lesson group) {
         if (group == null) {
             return null;
