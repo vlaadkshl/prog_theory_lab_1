@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.nure.progtheory.lab.business.Subject;
-import ua.nure.progtheory.lab.converters.SubjectConverter;
+import ua.nure.progtheory.lab.converters.Converter;
+import ua.nure.progtheory.lab.data.SubjectData;
 import ua.nure.progtheory.lab.data.TeacherData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
 import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
@@ -18,7 +19,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     private final SubjectRepository subjectRepository;
 
-    private final SubjectConverter subjectConverter;
+    private final Converter<Subject, SubjectData> subjectConverter;
 
     @Override
     public List<Subject> getAll() {

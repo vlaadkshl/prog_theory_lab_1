@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ua.nure.progtheory.lab.business.Group;
 import ua.nure.progtheory.lab.business.Lesson;
+import ua.nure.progtheory.lab.business.Subject;
 import ua.nure.progtheory.lab.data.GroupData;
 import ua.nure.progtheory.lab.data.LessonData;
+import ua.nure.progtheory.lab.data.SubjectData;
 
 @Component
 @RequiredArgsConstructor
@@ -15,7 +17,7 @@ public class LessonConverter implements Converter<Lesson, LessonData> {
 
     private final TeacherConverter teacherConverter;
 
-    private final SubjectConverter subjectConverter;
+    private final Converter<Subject, SubjectData> subjectConverter;
 
     @Override
     public Lesson fromData(LessonData data) {

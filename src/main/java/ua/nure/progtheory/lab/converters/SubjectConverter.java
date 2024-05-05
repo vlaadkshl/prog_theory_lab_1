@@ -7,10 +7,11 @@ import ua.nure.progtheory.lab.data.SubjectData;
 
 @Component
 @RequiredArgsConstructor
-public class SubjectConverter {
+public class SubjectConverter implements Converter<Subject, SubjectData> {
 
     private final TeacherConverter teacherConverter;
 
+    @Override
     public Subject fromData(SubjectData data) {
         if (data == null) {
             return null;
@@ -23,11 +24,12 @@ public class SubjectConverter {
                 .build();
     }
 
+    @Override
     public SubjectData toData(Subject group) {
         if (group == null) {
             return null;
         }
-        
+
         return SubjectData.builder()
                 .id(group.getId())
                 .name(group.getName())
