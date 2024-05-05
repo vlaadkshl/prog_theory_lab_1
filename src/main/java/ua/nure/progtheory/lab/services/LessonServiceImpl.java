@@ -14,13 +14,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class LessonServiceImpl {
+public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
 
     private final LessonConverter lessonConverter;
 
-    public List<Lesson> getAllLessons() {
+    @Override
+    public List<Lesson> getAll() {
         var lessonsData = lessonRepository.findAll();
 
         if (lessonsData.isEmpty()) {
@@ -32,7 +33,8 @@ public class LessonServiceImpl {
                 .toList();
     }
 
-    public Lesson getLesson(Long lessonId) {
+    @Override
+    public Lesson get(Long lessonId) {
         var lessonData = lessonRepository.findById(lessonId).orElse(null);
 
         if (lessonData == null) {
@@ -42,7 +44,8 @@ public class LessonServiceImpl {
         return lessonConverter.fromData(lessonData);
     }
 
-    public List<Lesson> getLessonsByGroup(Long groupId) {
+    @Override
+    public List<Lesson> getByGroup(Long groupId) {
         var lessonsData = lessonRepository.findByGroupId(groupId);
 
         if (lessonsData.isEmpty()) {
@@ -54,7 +57,8 @@ public class LessonServiceImpl {
                 .toList();
     }
 
-    public List<Lesson> getLessonsByTeacher(Long teacherId) {
+    @Override
+    public List<Lesson> getByTeacher(Long teacherId) {
         var lessonsData = lessonRepository.findByTeacherId(teacherId);
 
         if (lessonsData.isEmpty()) {
@@ -66,6 +70,7 @@ public class LessonServiceImpl {
                 .toList();
     }
 
+    @Override
     public List<Lesson> getLessonsBySubject(Long subjectId) {
         var lessonsData = lessonRepository.findBySubjectId(subjectId);
 
@@ -78,7 +83,8 @@ public class LessonServiceImpl {
                 .toList();
     }
 
-    public Lesson addLesson(Lesson lesson) {
+    @Override
+    public Lesson save(Lesson lesson) {
         LessonData lessonData = lessonConverter.toData(lesson);
 
         if (lessonRepository.existsByTeacherIdAndSubjectIdAndGroupId(
@@ -101,7 +107,8 @@ public class LessonServiceImpl {
         }
     }
 
-    public void deleteLesson(Long lessonId) {
+    @Override
+    public void delete(Long lessonId) {
         if (!lessonRepository.existsById(lessonId)) {
             throw new ResourceNotFoundException("Lesson is not found");
         }

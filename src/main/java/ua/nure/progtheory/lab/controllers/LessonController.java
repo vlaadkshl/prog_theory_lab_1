@@ -3,7 +3,10 @@ package ua.nure.progtheory.lab.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ua.nure.progtheory.lab.business.Lesson;
-import ua.nure.progtheory.lab.services.LessonServiceImpl;
+import ua.nure.progtheory.lab.services.LessonService;
+import ua.nure.progtheory.lab.services.ResourceReceiver;
+import ua.nure.progtheory.lab.services.ResourceRemover;
+import ua.nure.progtheory.lab.services.ResourceSaver;
 
 import java.util.List;
 
@@ -12,26 +15,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LessonController {
 
-    private final LessonServiceImpl lessonServiceImpl;
+    private final ResourceReceiver<Lesson> lessonsReceiver;
+
+    private final ResourceSaver<Lesson> lessonsSaver;
+
+    private final ResourceRemover<Lesson> lessonsRemover;
+
+    private final LessonService lessonServiceImpl;
 
     @GetMapping("/")
     public List<Lesson> getAllLessons() {
-        return lessonServiceImpl.getAllLessons();
+        return lessonsReceiver.getAll();
     }
 
     @GetMapping("/{lessonId}")
     public Lesson getLesson(@PathVariable Long lessonId) {
-        return lessonServiceImpl.getLesson(lessonId);
+        return lessonsReceiver.get(lessonId);
     }
 
     @GetMapping("/byGroup/{groupId}")
     public List<Lesson> getLessonsByGroup(@PathVariable Long groupId) {
-        return lessonServiceImpl.getLessonsByGroup(groupId);
+        return lessonServiceImpl.getByGroup(groupId);
     }
 
     @GetMapping("/byTeacher/{teacherId}")
     public List<Lesson> getLessonsByTeacher(@PathVariable Long teacherId) {
-        return lessonServiceImpl.getLessonsByTeacher(teacherId);
+        return lessonServiceImpl.getByTeacher(teacherId);
     }
 
     @GetMapping("/bySubject/{subjectId}")
@@ -41,11 +50,11 @@ public class LessonController {
 
     @PostMapping("/")
     public Lesson addLesson(@RequestBody Lesson lesson) {
-        return lessonServiceImpl.addLesson(lesson);
+        return lessonsSaver.save(lesson);
     }
 
     @DeleteMapping("/{lessonId}")
     public void deleteLesson(@PathVariable Long lessonId) {
-        lessonServiceImpl.deleteLesson(lessonId);
+        lessonsRemover.delete(lessonId);
     }
 }
