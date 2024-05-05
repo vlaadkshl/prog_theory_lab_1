@@ -14,13 +14,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class GroupServiceImpl {
+public class GroupServiceImpl implements GroupService {
 
     private final GroupConverter groupConverter;
 
     private final GroupRepository groupRepository;
 
-    public List<Group> getAllGroups() {
+    public List<Group> getAll() {
         List<GroupData> groupsData = groupRepository.findAll();
 
         if (groupsData.isEmpty()) {
@@ -32,7 +32,7 @@ public class GroupServiceImpl {
                 .toList();
     }
 
-    public Group getGroup(Long id) {
+    public Group get(Long id) {
         GroupData groupData = groupRepository.findById(id).orElse(null);
 
         if (groupData == null) {
@@ -42,7 +42,7 @@ public class GroupServiceImpl {
         return groupConverter.fromData(groupData);
     }
 
-    public Group addGroup(Group group) {
+    public Group save(Group group) {
         GroupData groupData = groupConverter.toData(group);
 
         if (groupRepository.existsByName(group.getName())) {
