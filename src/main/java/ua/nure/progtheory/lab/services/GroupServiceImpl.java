@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ua.nure.progtheory.lab.business.Group;
-import ua.nure.progtheory.lab.converters.GroupConverter;
+import ua.nure.progtheory.lab.converters.Converter;
 import ua.nure.progtheory.lab.data.GroupData;
 import ua.nure.progtheory.lab.exceptions.DbRecordAlreadyExistsException;
 import ua.nure.progtheory.lab.exceptions.ResourceNotFoundException;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
 
-    private final GroupConverter groupConverter;
+    private final Converter<Group, GroupData> groupConverter;
 
     private final GroupRepository groupRepository;
 

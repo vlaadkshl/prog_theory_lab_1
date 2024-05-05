@@ -2,14 +2,16 @@ package ua.nure.progtheory.lab.converters;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ua.nure.progtheory.lab.business.Group;
 import ua.nure.progtheory.lab.business.Lesson;
+import ua.nure.progtheory.lab.data.GroupData;
 import ua.nure.progtheory.lab.data.LessonData;
 
 @Component
 @RequiredArgsConstructor
 public class LessonConverter {
 
-    private final GroupConverter groupConverter;
+    private final Converter<Group, GroupData> groupConverter;
 
     private final TeacherConverter teacherConverter;
 
@@ -33,7 +35,7 @@ public class LessonConverter {
         if (group == null) {
             return null;
         }
-        
+
         return LessonData.builder()
                 .id(group.getId())
                 .teacher(teacherConverter.toData(group.getTeacher()))
