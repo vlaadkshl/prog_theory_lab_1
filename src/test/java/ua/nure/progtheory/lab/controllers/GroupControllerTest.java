@@ -41,42 +41,42 @@ class GroupControllerTest {
 
     @Test
     void getAllGroupsReturnsEmptyListWhenNoGroupsExist() throws Exception {
-        when(groupServiceImpl.getAllGroups()).thenReturn(Collections.emptyList());
+        when(groupServiceImpl.getAll()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/api/group/all"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
 
-        verify(groupServiceImpl, times(1)).getAllGroups();
+        verify(groupServiceImpl, times(1)).getAll();
     }
 
     @Test
     void getGroupReturnsGroupWhenExists() throws Exception {
         Group group = Group.builder().id(1L).build();
 
-        when(groupServiceImpl.getGroup(1L)).thenReturn(group);
+        when(groupServiceImpl.get(1L)).thenReturn(group);
 
         mockMvc.perform(get("/api/group/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":1}"));
 
-        verify(groupServiceImpl, times(1)).getGroup(1L);
+        verify(groupServiceImpl, times(1)).get(1L);
     }
 
     @Test
     void getGroupReturnsNotFoundWhenNotExists() throws Exception {
-        when(groupServiceImpl.getGroup(1L)).thenThrow(new ResourceNotFoundException("Group not found"));
+        when(groupServiceImpl.get(1L)).thenThrow(new ResourceNotFoundException("Group not found"));
 
         mockMvc.perform(get("/api/group/1"))
                 .andExpect(status().isNotFound());
 
-        verify(groupServiceImpl, times(1)).getGroup(1L);
+        verify(groupServiceImpl, times(1)).get(1L);
     }
 
     @Test
     void addGroupReturnsCreatedGroup() throws Exception {
         Group group = Group.builder().id(1L).build();
-        when(groupServiceImpl.addGroup(any(Group.class))).thenReturn(group);
+        when(groupServiceImpl.save(any(Group.class))).thenReturn(group);
 
         mockMvc.perform(post("/api/group/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -84,6 +84,6 @@ class GroupControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":1}"));
 
-        verify(groupServiceImpl, times(1)).addGroup(any(Group.class));
+        verify(groupServiceImpl, times(1)).save(any(Group.class));
     }
 }

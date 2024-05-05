@@ -41,41 +41,41 @@ class TeacherControllerTest {
 
     @Test
     void getAllTeachersReturnsEmptyListWhenNoTeachersExist() throws Exception {
-        when(teacherServiceImpl.getAllTeachers()).thenReturn(Collections.emptyList());
+        when(teacherServiceImpl.getAll()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/api/teacher/all"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
 
-        verify(teacherServiceImpl, times(1)).getAllTeachers();
+        verify(teacherServiceImpl, times(1)).getAll();
     }
 
     @Test
     void getTeacherReturnsTeacherWhenExists() throws Exception {
         Teacher teacher = Teacher.builder().id(1L).build();
-        when(teacherServiceImpl.getTeacher(1L)).thenReturn(teacher);
+        when(teacherServiceImpl.get(1L)).thenReturn(teacher);
 
         mockMvc.perform(get("/api/teacher/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":1}"));
 
-        verify(teacherServiceImpl, times(1)).getTeacher(1L);
+        verify(teacherServiceImpl, times(1)).get(1L);
     }
 
     @Test
     void getTeacherReturnsNotFoundWhenNotExists() throws Exception {
-        when(teacherServiceImpl.getTeacher(1L)).thenThrow(new ResourceNotFoundException("Teacher not found"));
+        when(teacherServiceImpl.get(1L)).thenThrow(new ResourceNotFoundException("Teacher not found"));
 
         mockMvc.perform(get("/api/teacher/1"))
                 .andExpect(status().isNotFound());
 
-        verify(teacherServiceImpl, times(1)).getTeacher(1L);
+        verify(teacherServiceImpl, times(1)).get(1L);
     }
 
     @Test
     void addTeacherReturnsCreatedTeacher() throws Exception {
         Teacher teacher = Teacher.builder().id(1L).build();
-        when(teacherServiceImpl.addTeacher(any(Teacher.class))).thenReturn(teacher);
+        when(teacherServiceImpl.save(any(Teacher.class))).thenReturn(teacher);
 
         mockMvc.perform(post("/api/teacher/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,6 +83,6 @@ class TeacherControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":1}"));
 
-        verify(teacherServiceImpl, times(1)).addTeacher(any(Teacher.class));
+        verify(teacherServiceImpl, times(1)).save(any(Teacher.class));
     }
 }

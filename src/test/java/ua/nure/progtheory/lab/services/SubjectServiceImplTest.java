@@ -50,7 +50,7 @@ public class SubjectServiceImplTest {
         when(subjectConverter.fromData(subjectData1)).thenReturn(subject1);
         when(subjectConverter.fromData(subjectData2)).thenReturn(subject2);
 
-        assertEquals(Arrays.asList(subject1, subject2), subjectServiceImpl.getAllSubjects());
+        assertEquals(Arrays.asList(subject1, subject2), subjectServiceImpl.getAll());
     }
 
     @Test
@@ -61,14 +61,14 @@ public class SubjectServiceImplTest {
         when(subjectRepository.findById(anyLong())).thenReturn(Optional.of(subjectData));
         when(subjectConverter.fromData(subjectData)).thenReturn(subject);
 
-        assertEquals(subject, subjectServiceImpl.getSubject(1L));
+        assertEquals(subject, subjectServiceImpl.get(1L));
     }
 
     @Test
     void getSubjectReturnsNullIfNotExists() {
         when(subjectRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> subjectServiceImpl.getSubject(1L));
+        assertThrows(ResourceNotFoundException.class, () -> subjectServiceImpl.get(1L));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class SubjectServiceImplTest {
         when(subjectConverter.fromData(any(SubjectData.class))).thenReturn(subject);
         when(subjectRepository.existsByNameAndTeachers(anyString(), anyList())).thenReturn(true);
 
-        assertThrows(DbRecordAlreadyExistsException.class, () -> subjectServiceImpl.addSubject(subject));
+        assertThrows(DbRecordAlreadyExistsException.class, () -> subjectServiceImpl.save(subject));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class SubjectServiceImplTest {
         when(subjectRepository.save(any(SubjectData.class))).thenReturn(subjectData);
         when(subjectConverter.fromData(any(SubjectData.class))).thenReturn(subject);
 
-        assertEquals(subject, subjectServiceImpl.addSubject(subject));
+        assertEquals(subject, subjectServiceImpl.save(subject));
     }
 
     @Test
@@ -113,6 +113,6 @@ public class SubjectServiceImplTest {
         when(subjectConverter.toData(any(Subject.class))).thenReturn(subjectData);
         when(subjectRepository.save(any(SubjectData.class))).thenThrow(DataIntegrityViolationException.class);
 
-        assertThrows(RuntimeException.class, () -> subjectServiceImpl.addSubject(subject));
+        assertThrows(RuntimeException.class, () -> subjectServiceImpl.save(subject));
     }
 }

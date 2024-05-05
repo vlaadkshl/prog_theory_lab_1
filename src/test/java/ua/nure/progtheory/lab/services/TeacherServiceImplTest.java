@@ -47,7 +47,7 @@ class TeacherServiceImplTest {
         when(teacherConverter.fromData(teacherData1)).thenReturn(teacher1);
         when(teacherConverter.fromData(teacherData2)).thenReturn(teacher2);
 
-        assertEquals(Arrays.asList(teacher1, teacher2), teacherServiceImpl.getAllTeachers());
+        assertEquals(Arrays.asList(teacher1, teacher2), teacherServiceImpl.getAll());
     }
 
     @Test
@@ -58,14 +58,14 @@ class TeacherServiceImplTest {
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.of(teacherData));
         when(teacherConverter.fromData(teacherData)).thenReturn(teacher);
 
-        assertEquals(teacher, teacherServiceImpl.getTeacher(1L));
+        assertEquals(teacher, teacherServiceImpl.get(1L));
     }
 
     @Test
     void getTeacherReturnsNullIfNotExists() {
         when(teacherRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> teacherServiceImpl.getTeacher(1L));
+        assertThrows(ResourceNotFoundException.class, () -> teacherServiceImpl.get(1L));
     }
 
     @Test
@@ -77,7 +77,7 @@ class TeacherServiceImplTest {
         when(teacherConverter.fromData(any(TeacherData.class))).thenReturn(teacher);
         when(teacherRepository.existsByName(anyString())).thenReturn(true);
 
-        assertThrows(DbRecordAlreadyExistsException.class, () -> teacherServiceImpl.addTeacher(teacher));
+        assertThrows(DbRecordAlreadyExistsException.class, () -> teacherServiceImpl.save(teacher));
     }
 
     @Test
@@ -90,7 +90,7 @@ class TeacherServiceImplTest {
         when(teacherRepository.save(any(TeacherData.class))).thenReturn(teacherData);
         when(teacherConverter.fromData(any(TeacherData.class))).thenReturn(teacher);
 
-        assertEquals(teacher, teacherServiceImpl.addTeacher(teacher));
+        assertEquals(teacher, teacherServiceImpl.save(teacher));
     }
 
     @Test
@@ -102,6 +102,6 @@ class TeacherServiceImplTest {
         when(teacherConverter.toData(any(Teacher.class))).thenReturn(teacherData);
         when(teacherRepository.save(any(TeacherData.class))).thenThrow(DataIntegrityViolationException.class);
 
-        assertThrows(RuntimeException.class, () -> teacherServiceImpl.addTeacher(teacher));
+        assertThrows(RuntimeException.class, () -> teacherServiceImpl.save(teacher));
     }
 }
