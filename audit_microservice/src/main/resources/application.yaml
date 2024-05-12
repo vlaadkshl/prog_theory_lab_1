@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/audit
-    username: audit
-    password: audit
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/audit}
+    username: ${SPRING_DATASOURCE_USERNAME:audit}
+    password: ${SPRING_DATASOURCE_PASSWORD:audit}
   jpa:
     hibernate:
       ddl-auto: validate
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
