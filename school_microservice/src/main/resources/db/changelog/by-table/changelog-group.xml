@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="vlaadkshl">
+        <createTable tableName="group_table">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addAutoIncrement tableName="group_table" columnName="id"
+                          generationType="ALWAYS"
+                          incrementBy="1"
+                          columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet id="2" author="vlaadkshl">
+        <insert tableName="group_table">
+            <column name="name" value="ІТІНФ-21-1"/>
+        </insert>
+        <insert tableName="group_table">
+            <column name="name" value="ІТІНФ-21-2"/>
+        </insert>
+        <insert tableName="group_table">
+            <column name="name" value="ІТІНФ-21-3"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

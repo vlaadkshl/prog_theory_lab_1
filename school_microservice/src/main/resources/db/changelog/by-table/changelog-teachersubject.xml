@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="vlaadkshl">
+        <createTable tableName="TeacherSubject">
+            <column name="teacher_id" type="BIGINT">
+                <constraints references="Teacher(id)" foreignKeyName="fk_teacher_id" nullable="false"/>
+            </column>
+            <column name="subject_id" type="BIGINT">
+                <constraints references="Subject(id)" foreignKeyName="fk_subject_id" nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="TeacherSubject" columnNames="teacher_id, subject_id"/>
+    </changeSet>
+
+    <changeSet id="2" author="vlaadkshl">
+        <insert tableName="TeacherSubject">
+            <column name="teacher_id" value="1"/>
+            <column name="subject_id" value="1"/>
+        </insert>
+        <insert tableName="TeacherSubject">
+            <column name="teacher_id" value="1"/>
+            <column name="subject_id" value="2"/>
+        </insert>
+        <insert tableName="TeacherSubject">
+            <column name="teacher_id" value="2"/>
+            <column name="subject_id" value="3"/>
+        </insert>
+        <insert tableName="TeacherSubject">
+            <column name="teacher_id" value="3"/>
+            <column name="subject_id" value="4"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

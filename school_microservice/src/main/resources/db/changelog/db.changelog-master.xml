@@ -1,0 +1,12 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <include id="1" author="vlaadkshl" file="/db/changelog/by-table/changelog-teacher.xml"/>
+    <include id="2" author="vlaadkshl" file="/db/changelog/by-table/changelog-group.xml"/>
+    <include id="3" author="vlaadkshl" file="/db/changelog/by-table/changelog-subject.xml"/>
+    <include id="4" author="vlaadkshl" file="/db/changelog/by-table/changelog-teachersubject.xml"/>
+    <include id="5" author="vlaadkshl" file="/db/changelog/by-table/changelog-lesson.xml"/>
+
+</databaseChangeLog>
