@@ -28,6 +28,8 @@ dependencies {
     implementation("org.liquibase:liquibase-core")
     testImplementation("org.springframework.kafka:spring-kafka-test")
     runtimeOnly("org.postgresql:postgresql")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    annotationProcessor("org.projectlombok:lombok")
 }
 
 tasks.test {
