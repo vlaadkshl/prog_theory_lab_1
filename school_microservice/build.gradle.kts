@@ -29,6 +29,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     runtimeOnly("com.h2database:h2")
+    implementation("org.springframework.kafka:spring-kafka")
 }
 
 tasks.withType<Test> {
