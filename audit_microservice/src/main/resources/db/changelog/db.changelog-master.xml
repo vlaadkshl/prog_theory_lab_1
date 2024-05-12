@@ -4,5 +4,8 @@
                                        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
     <include id="1" author="vlaadkshl" file="/db/changelog/by-table/changelog-read.xml"/>
+    <include id="2" author="vlaadkshl" file="/db/changelog/by-table/changelog-create.xml"/>
+    <include id="3" author="vlaadkshl" file="/db/changelog/by-table/changelog-update.xml"/>
+    <include id="4" author="vlaadkshl" file="/db/changelog/by-table/changelog-delete.xml"/>
 
 </databaseChangeLog>

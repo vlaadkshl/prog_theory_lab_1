@@ -5,7 +5,7 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="1" author="vlaadkshl">
-        <createTable tableName="read_data">
+        <createTable tableName="create_data">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -19,7 +19,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addAutoIncrement tableName="read_data" columnName="id"
+        <addAutoIncrement tableName="create_data" columnName="id"
                           generationType="ALWAYS"
                           incrementBy="1"
                           columnDataType="BIGINT"/>
