@@ -7,6 +7,7 @@ import ua.nure.progtheory.services.LessonService;
 import ua.nure.progtheory.services.ResourceReceiver;
 import ua.nure.progtheory.services.ResourceRemover;
 import ua.nure.progtheory.services.ResourceSaver;
+import ua.nure.progtheory.services.audition.AuditorService;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ import java.util.List;
 @RequestMapping("/api/lesson")
 @RequiredArgsConstructor
 public class LessonController {
+
+    private final AuditorService auditorService;
 
     private final ResourceReceiver<Lesson> lessonsReceiver;
 
@@ -25,26 +28,31 @@ public class LessonController {
 
     @GetMapping("/")
     public List<Lesson> getAllLessons() {
+        auditorService.auditReading("all", "lesson");
         return lessonsReceiver.getAll();
     }
 
     @GetMapping("/{lessonId}")
     public Lesson getLesson(@PathVariable Long lessonId) {
+        auditorService.auditReading("byId: " + lessonId, "lesson");
         return lessonsReceiver.get(lessonId);
     }
 
     @GetMapping("/byGroup/{groupId}")
     public List<Lesson> getLessonsByGroup(@PathVariable Long groupId) {
+        auditorService.auditReading("byGroupId: " + groupId, "lesson");
         return lessonServiceImpl.getByGroup(groupId);
     }
 
     @GetMapping("/byTeacher/{teacherId}")
     public List<Lesson> getLessonsByTeacher(@PathVariable Long teacherId) {
+        auditorService.auditReading("byTeacherId: " + teacherId, "lesson");
         return lessonServiceImpl.getByTeacher(teacherId);
     }
 
     @GetMapping("/bySubject/{subjectId}")
     public List<Lesson> getLessonsBySubject(@PathVariable Long subjectId) {
+        auditorService.auditReading("bySubjectId: " + subjectId, "lesson");
         return lessonServiceImpl.getLessonsBySubject(subjectId);
     }
 

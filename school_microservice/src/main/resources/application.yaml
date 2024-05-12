@@ -7,12 +7,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    database-platform: org.hibernate.dialect.H2Dialect
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
   h2:
     console:
       enabled: true
       path: /h2-console
+  kafka:
+    bootstrap-servers: localhost:29092
   application:
     name: prog_theory_lab_1
