@@ -12,6 +12,7 @@ import ua.nure.progtheory.business.Teacher;
 import ua.nure.progtheory.exceptions.GlobalExceptionHandler;
 import ua.nure.progtheory.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.services.TeacherServiceImpl;
+import ua.nure.progtheory.services.audition.AuditorService;
 
 import java.util.Collections;
 
@@ -26,6 +27,9 @@ class TeacherControllerTest {
 
     @InjectMocks
     private TeacherController teacherController;
+
+    @Mock
+    private AuditorService auditorService;
 
     @Mock
     private TeacherServiceImpl teacherServiceImpl;

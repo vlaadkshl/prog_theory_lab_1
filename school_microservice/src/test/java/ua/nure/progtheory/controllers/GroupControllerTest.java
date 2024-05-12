@@ -12,6 +12,7 @@ import ua.nure.progtheory.business.Group;
 import ua.nure.progtheory.exceptions.GlobalExceptionHandler;
 import ua.nure.progtheory.exceptions.ResourceNotFoundException;
 import ua.nure.progtheory.services.GroupServiceImpl;
+import ua.nure.progtheory.services.audition.AuditorService;
 
 import java.util.Collections;
 
@@ -26,6 +27,9 @@ class GroupControllerTest {
 
     @InjectMocks
     private GroupController groupController;
+
+    @Mock
+    private AuditorService auditorService;
 
     @Mock
     private GroupServiceImpl groupServiceImpl;
