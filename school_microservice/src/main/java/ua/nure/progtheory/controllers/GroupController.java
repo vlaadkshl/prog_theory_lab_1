@@ -34,6 +34,7 @@ public class GroupController {
 
     @PostMapping("/")
     public Group addGroup(@RequestBody Group group) {
+        auditorService.auditCreation(group.toString(), "group");
         return groupSaver.save(group);
     }
 }

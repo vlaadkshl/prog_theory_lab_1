@@ -34,6 +34,7 @@ public class TeacherController {
 
     @PostMapping("/")
     public Teacher addTeacher(@RequestBody Teacher teacher) {
+        auditorService.auditCreation(teacher, "teacher");
         return teacherSaver.save(teacher);
     }
 }

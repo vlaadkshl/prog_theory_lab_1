@@ -34,6 +34,7 @@ public class SubjectController {
 
     @PostMapping("/")
     public Subject addSubject(@RequestBody Subject subject) {
+        auditorService.auditCreation(subject, "subject");
         return subjectSaver.save(subject);
     }
 }

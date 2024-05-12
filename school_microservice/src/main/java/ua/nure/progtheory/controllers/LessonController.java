@@ -58,11 +58,13 @@ public class LessonController {
 
     @PostMapping("/")
     public Lesson addLesson(@RequestBody Lesson lesson) {
+        auditorService.auditCreation(lesson, "lesson");
         return lessonsSaver.save(lesson);
     }
 
     @DeleteMapping("/{lessonId}")
     public void deleteLesson(@PathVariable Long lessonId) {
+        auditorService.auditDeleting("byId: " + lessonId, "lesson");
         lessonsRemover.delete(lessonId);
     }
 }
